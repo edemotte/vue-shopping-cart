@@ -96,12 +96,17 @@ export default {
           }
         }
       }
+      localStorage.setItem("total", JSON.stringify(this.total));
     },
   },
   mounted() {
     window.addEventListener("cartItems-key-localstorage-changed", (event) => {
       console.log("check..", JSON.parse(event.detail.storage));
       this.cart = JSON.parse(event.detail.storage);
+    });
+    window.addEventListener("cartTotal-key-localstorage-changed", (event) => {
+      console.log("check..", JSON.parse(event.detail.storage));
+      this.total = JSON.parse(event.detail.storage);
     });
   },
   filters: {
