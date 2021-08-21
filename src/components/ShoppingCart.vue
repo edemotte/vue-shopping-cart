@@ -1,0 +1,165 @@
+<template>
+  <div>
+    <header>
+      <h1>{{ appTitle }}</h1>
+      <!-- button show -->
+      <button class="my-cart" @click.stop="openCartModal()">
+        My Cart ({{ cart.length }})
+      </button>
+    </header>
+
+    <CartModal ref="cartModal" />
+
+    <div class="grid">
+      <div class="">
+        <div class="products">
+          <div class="products-my-cart">
+            <h2>Products</h2>
+          </div>
+          <ul class="products-list">
+            <li
+              class="product"
+              v-for="(prod, ind) in products"
+              :key="'ind-' + ind"
+            >
+              <div class="box">
+                <div class="image">
+                  <img :src="getImgUrl(prod.image)" alt="" />
+                </div>
+                <h3 class="title">{{ prod.title }}</h3>
+                <p class="price">{{ prod.price | currency }}</p>
+                <button @click="addToCart(prod)">Add to cart</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style lang="scss">
+@import "../assets/styles/ShoppingCart.scss";
+</style>
+
+<script>
+import CartModal from "./CartModal.vue";
+
+export default {
+  components: {
+    CartModal,
+  },
+  data() {
+    return {
+      appTitle: "My Shop",
+      showModal: false,
+      cartLength: 0,
+      products: [
+        {
+          id: 1,
+          title: "Product One",
+          price: 9.99,
+          image: "boy_brow_open_brown_main.jpg",
+        },
+        {
+          id: 2,
+          title: "Product Two",
+          price: 12.99,
+          image: "cloud_paint_dawn_crunchy_hover.jpg",
+        },
+        {
+          id: 3,
+          title: "Product Three",
+          price: 8.0,
+          image: "solution.jpg",
+        },
+        {
+          id: 4,
+          title: "Product Four",
+          price: 11.5,
+          image: "SP_-_hover.jpg",
+        },
+        {
+          id: 5,
+          title: "Product Five",
+          price: 4.5,
+          image: "SuperPack_ShopGrid_1_main.jpg",
+        },
+        {
+          id: 6,
+          title: "Product Six",
+          price: 7.5,
+          image: "cloud_paint_dawn_crunchy_hover.jpg",
+        },
+        { id: 7, title: "Product Seven", price: 10.5, image: "SP_-_hover.jpg" },
+        {
+          id: 8,
+          title: "Product Eight",
+          price: 9.5,
+          image: "boy_brow_open_brown_main.jpg",
+        },
+        { id: 9, title: "Product Nine", price: 10.5, image: "solution.jpg" },
+        {
+          id: 10,
+          title: "Product Ten",
+          price: 100.5,
+          image: "cloud_paint_dawn_crunchy_hover.jpg",
+        },
+      ],
+      cart: [],
+      total: 0,
+    };
+  },
+  methods: {
+    getImgUrl(imageName) {
+      return require(`../assets/images/${imageName}`);
+    },
+    openCartModal() {
+      // console.log(this.$refs.cartModal);
+      this.$refs.cartModal.show();
+    },
+    addToCart(prod) {
+      // Increment total price
+      this.total += prod.price;
+
+      let inCart = false;
+
+      // Update quantity if the item is already in the cart
+      for (let i = 0; i < this.cart.length; i++) {
+        if (this.cart[i].id === prod.id) {
+          inCart = true;
+          this.cart[i].quantity++;
+          break;
+        }
+      }
+
+      if (!inCart) {
+        this.cart.push({
+          id: prod.id,
+          title: prod.title,
+          price: prod.price,
+          quantity: 1,
+        });
+      }
+
+      // this.$store.commit("addToCart", this.cart);
+      // this.$store.commit("addToCart", this.total);
+      localStorage.setItem("cartItems", JSON.stringify(this.cart));
+      localStorage.setItem("total", JSON.stringify(this.total));
+
+      window.dispatchEvent(
+        new CustomEvent("cartItems-key-localstorage-changed", {
+          detail: {
+            storage: localStorage.getItem("cartItems"),
+          },
+        })
+      );
+    },
+  },
+  filters: {
+    currency(price) {
+      return "$" + price.toFixed(2);
+    },
+  },
+};
+</script>
