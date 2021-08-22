@@ -83,6 +83,8 @@ export default {
     add(item) {
       this.total += item.price;
       item.quantity++;
+      localStorage.setItem("total", JSON.stringify(this.total));
+      this.updateCartLength();
     },
     sub(item) {
       this.total -= item.price;
@@ -92,20 +94,29 @@ export default {
         for (let i = 0; i < this.cart.length; i++) {
           if (this.cart[i].id === item.id) {
             this.cart.splice(i, 1);
+            // console.log(
+            localStorage.setItem("cartItems", JSON.stringify(this.cart));
+            // );
+            this.updateCartLength();
             break;
           }
         }
       }
-      localStorage.setItem("total", JSON.stringify(this.total));
+    },
+    updateCartLength() {
+      this.$store.commit(
+        "updateCartLength",
+        JSON.parse(localStorage.getItem("cartItems")).length
+      );
     },
   },
   mounted() {
     window.addEventListener("cartItems-key-localstorage-changed", (event) => {
-      console.log("check..", JSON.parse(event.detail.storage));
+      console.log("check1..", JSON.parse(event.detail.storage));
       this.cart = JSON.parse(event.detail.storage);
     });
     window.addEventListener("cartTotal-key-localstorage-changed", (event) => {
-      console.log("check..", JSON.parse(event.detail.storage));
+      console.log("check2..", JSON.parse(event.detail.storage));
       this.total = JSON.parse(event.detail.storage);
     });
   },

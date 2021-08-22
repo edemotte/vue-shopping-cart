@@ -4,7 +4,7 @@
       <h1>{{ appTitle }}</h1>
       <!-- button show -->
       <button class="my-cart" @click.stop="openCartModal()">
-        My Cart ({{ cart.length }})
+        My Cart ({{ this.$store.state.cartLength }})
       </button>
     </header>
 
@@ -53,30 +53,29 @@ export default {
     return {
       appTitle: "My Shop",
       showModal: false,
-      cartLength: 0,
       products: [
         {
           id: 1,
           title: "Product One",
-          price: 9.99,
+          price: 10.5,
           image: "boy_brow_open_brown_main.jpg",
         },
         {
           id: 2,
           title: "Product Two",
-          price: 12.99,
+          price: 10,
           image: "cloud_paint_dawn_crunchy_hover.jpg",
         },
         {
           id: 3,
           title: "Product Three",
-          price: 8.0,
+          price: 5.5,
           image: "solution.jpg",
         },
         {
           id: 4,
           title: "Product Four",
-          price: 11.5,
+          price: 20.0,
           image: "SP_-_hover.jpg",
         },
         {
@@ -88,14 +87,14 @@ export default {
         {
           id: 6,
           title: "Product Six",
-          price: 7.5,
+          price: 5.5,
           image: "cloud_paint_dawn_crunchy_hover.jpg",
         },
         { id: 7, title: "Product Seven", price: 10.5, image: "SP_-_hover.jpg" },
         {
           id: 8,
           title: "Product Eight",
-          price: 9.5,
+          price: 10.5,
           image: "boy_brow_open_brown_main.jpg",
         },
         { id: 9, title: "Product Nine", price: 10.5, image: "solution.jpg" },
@@ -111,6 +110,12 @@ export default {
     };
   },
   methods: {
+    updateCartLength() {
+      this.$store.commit(
+        "updateCartLength",
+        JSON.parse(localStorage.getItem("cartItems")).length
+      );
+    },
     getImgUrl(imageName) {
       return require(`../assets/images/${imageName}`);
     },
@@ -146,11 +151,18 @@ export default {
       // this.$store.commit("addToCart", this.total);
       localStorage.setItem("cartItems", JSON.stringify(this.cart));
       localStorage.setItem("total", JSON.stringify(this.total));
-
+      this.updateCartLength();
       window.dispatchEvent(
         new CustomEvent("cartItems-key-localstorage-changed", {
           detail: {
             storage: localStorage.getItem("cartItems"),
+          },
+        })
+      );
+      window.dispatchEvent(
+        new CustomEvent("cartTotal-key-localstorage-changed", {
+          detail: {
+            storage: localStorage.getItem("total"),
           },
         })
       );
