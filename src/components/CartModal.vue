@@ -104,20 +104,30 @@ export default {
       }
     },
     updateCartLength() {
-      this.$store.commit(
-        "updateCartLength",
-        JSON.parse(localStorage.getItem("cartItems")).length
-      );
+      try {
+        this.$store.commit(
+          "updateCartLength",
+          JSON.parse(localStorage.getItem("cartItems")).length
+        );
+      } catch (error) {
+        console.log("Could not update cart length", error);
+      }
     },
   },
   mounted() {
     window.addEventListener("cartItems-key-localstorage-changed", (event) => {
-      console.log("check1..", JSON.parse(event.detail.storage));
-      this.cart = JSON.parse(event.detail.storage);
+      try {
+        this.cart = JSON.parse(event.detail.storage);
+      } catch (error) {
+        console.log("Error while getting cart data from local storage", error);
+      }
     });
     window.addEventListener("cartTotal-key-localstorage-changed", (event) => {
-      console.log("check2..", JSON.parse(event.detail.storage));
-      this.total = JSON.parse(event.detail.storage);
+      try {
+        this.total = JSON.parse(event.detail.storage);
+      } catch (error) {
+        console.log("Error getting cart total data from local storage", error);
+      }
     });
   },
   filters: {

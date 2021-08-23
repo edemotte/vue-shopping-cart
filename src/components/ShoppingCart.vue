@@ -111,10 +111,14 @@ export default {
   },
   methods: {
     updateCartLength() {
-      this.$store.commit(
-        "updateCartLength",
-        JSON.parse(localStorage.getItem("cartItems")).length
-      );
+      try {
+        this.$store.commit(
+          "updateCartLength",
+          JSON.parse(localStorage.getItem("cartItems")).length
+        );
+      } catch (error) {
+        console.log("Error updating cart length", error);
+      }
     },
     getImgUrl(imageName) {
       return require(`../assets/images/${imageName}`);
@@ -126,7 +130,11 @@ export default {
     addToCart(prod) {
       //get current state of cart from local storage
       if (localStorage.getItem("cartItems").length > 0) {
-        this.cart = JSON.parse(localStorage.getItem("cartItems"));
+        try {
+          this.cart = JSON.parse(localStorage.getItem("cartItems"));
+        } catch (error) {
+          console.log("Error getting cart items length", error);
+        }
       }
       // console.log("cart items length", localStorage.getItem("cartItems").length);
       // Increment total price
