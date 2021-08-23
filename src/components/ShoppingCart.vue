@@ -24,7 +24,12 @@
             >
               <div class="box">
                 <div class="image">
-                  <img :src="getImgUrl(prod.image)" alt="" />
+                  <!-- <img :src="getImgUrl(prod.image)" alt="" /> -->
+                  <VueSlickCarousel v-bind="settings">
+                    <div v-for="image in prod.images" :key="image.id">
+                      <img :src="getImgUrl(image)" alt="" />
+                    </div>
+                  </VueSlickCarousel>
                 </div>
                 <h3 class="title">{{ prod.title }}</h3>
                 <p class="price">{{ prod.price | currency }}</p>
@@ -44,65 +49,148 @@
 
 <script>
 import CartModal from "./CartModal.vue";
+import VueSlickCarousel from "vue-slick-carousel";
+import "vue-slick-carousel/dist/vue-slick-carousel.css";
+// optional style for arrows & dots
+import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 
 export default {
   components: {
     CartModal,
+    VueSlickCarousel,
   },
   data() {
     return {
       appTitle: "My Shop",
       showModal: false,
+      settings: {
+        dots: true,
+        arrows: false,
+        fade: true,
+        draggable: true,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        initialSlide: 0,
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              infinite: true,
+              dots: true,
+            },
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              initialSlide: 1,
+            },
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+            },
+          },
+        ],
+      },
       products: [
         {
           id: 1,
           title: "Product One",
           price: 10.5,
-          image: "boy_brow_open_brown_main.jpg",
+          images: [
+            "boy_brow_open_brown_main.jpg",
+            "SuperPack_ShopGrid_1_main.jpg",
+          ],
         },
         {
           id: 2,
           title: "Product Two",
           price: 10,
-          image: "cloud_paint_dawn_crunchy_hover.jpg",
+          images: [
+            "solution.jpg",
+            "SuperPack_ShopGrid_1_main.jpg",
+            "cloud_paint_dawn_crunchy_hover.jpg",
+          ],
         },
         {
           id: 3,
           title: "Product Three",
           price: 5.5,
-          image: "solution.jpg",
+          images: ["solution.jpg", "cloud_paint_dawn_crunchy_hover.jpg"],
         },
         {
           id: 4,
           title: "Product Four",
           price: 20.0,
-          image: "SP_-_hover.jpg",
+          images: [
+            "SP_-_hover.jpg",
+            "SuperPack_ShopGrid_1_main.jpg",
+            "cloud_paint_dawn_crunchy_hover.jpg",
+          ],
         },
         {
           id: 5,
           title: "Product Five",
           price: 4.5,
-          image: "SuperPack_ShopGrid_1_main.jpg",
+          images: [
+            "SuperPack_ShopGrid_1_main.jpg",
+            "SP_-_hover.jpg",
+            "cloud_paint_dawn_crunchy_hover.jpg",
+          ],
         },
         {
           id: 6,
           title: "Product Six",
           price: 5.5,
-          image: "cloud_paint_dawn_crunchy_hover.jpg",
+          images: [
+            "cloud_paint_dawn_crunchy_hover.jpg",
+            "SP_-_hover.jpg",
+            "solution.jpg",
+          ],
         },
-        { id: 7, title: "Product Seven", price: 10.5, image: "SP_-_hover.jpg" },
+        {
+          id: 7,
+          title: "Product Seven",
+          price: 10.5,
+          images: [
+            "cloud_paint_dawn_crunchy_hover.jpg",
+            "SP_-_hover.jpg",
+            "solution.jpg",
+          ],
+        },
         {
           id: 8,
           title: "Product Eight",
           price: 10.5,
-          image: "boy_brow_open_brown_main.jpg",
+          images: ["solution.jpg", "SP_-_hover.jpg", "solution.jpg"],
         },
-        { id: 9, title: "Product Nine", price: 10.5, image: "solution.jpg" },
+        {
+          id: 9,
+          title: "Product Nine",
+          price: 10.5,
+          images: [
+            "cloud_paint_dawn_crunchy_hover.jpg",
+            "SP_-_hover.jpg",
+            "solution.jpg",
+          ],
+        },
         {
           id: 10,
           title: "Product Ten",
           price: 100.5,
-          image: "cloud_paint_dawn_crunchy_hover.jpg",
+          images: [
+            "boy_brow_open_brown_main.jpg",
+            "SP_-_hover.jpg",
+            "solution.jpg",
+          ],
         },
       ],
       cart: [],
