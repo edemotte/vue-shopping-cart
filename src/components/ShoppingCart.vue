@@ -64,7 +64,7 @@ export default {
       appTitle: "My Shop",
       showModal: false,
       settings: {
-        mobileFirst:true,
+        mobileFirst: true,
         dots: true,
         arrows: false,
         fade: true,
