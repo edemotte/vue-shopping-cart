@@ -102,6 +102,7 @@ export default {
           }
         }
       }
+      localStorage.setItem("total", JSON.stringify(this.total));
     },
     updateCartLength() {
       try {

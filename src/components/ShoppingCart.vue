@@ -132,6 +132,7 @@ export default {
       if (localStorage.getItem("cartItems").length > 0) {
         try {
           this.cart = JSON.parse(localStorage.getItem("cartItems"));
+          this.total = JSON.parse(localStorage.getItem("total"));
         } catch (error) {
           console.log("Error getting cart items length", error);
         }
