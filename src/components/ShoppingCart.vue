@@ -124,6 +124,11 @@ export default {
       this.$refs.cartModal.show();
     },
     addToCart(prod) {
+      //get current state of cart from local storage
+      if (localStorage.getItem("cartItems").length > 0) {
+        this.cart = JSON.parse(localStorage.getItem("cartItems"));
+      }
+      // console.log("cart items length", localStorage.getItem("cartItems").length);
       // Increment total price
       this.total += prod.price;
 
@@ -167,6 +172,10 @@ export default {
         })
       );
     },
+  },
+  mounted() {
+    console.log("mounted!");
+    localStorage.setItem("cartItems", []);
   },
   filters: {
     currency(price) {

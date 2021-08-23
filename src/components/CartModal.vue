@@ -13,7 +13,7 @@
       <div class="cart">
         <h2>Your Cart</h2>
         <table class="cart-list" v-if="cart.length">
-          <!-- else show you cart is empty -->
+          <!-- else show cart is empty -->
           <thead>
             <tr>
               <th class="head-title">Product</th>
